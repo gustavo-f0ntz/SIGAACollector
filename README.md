@@ -52,7 +52,15 @@ cd SIGAACollector
 
 ```
 python -m venv .venv
-.venv\Scripts\activate  # Windows
+```
+
+# Windows
+```
+.venv\Scripts\activate
+```
+
+# Linux/macOS
+```
 source .venv/bin/activate  # macOS/Linux
 ```
 
