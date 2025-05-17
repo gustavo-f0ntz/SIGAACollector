@@ -3,3 +3,29 @@ cache-downloads
 inspector
 api
 source/inspector.html
+
+# Ambientes virtuais
+.venv/
+venv/
+ENV/
+env/
+
+# Arquivos de saída gerados
+output/*.csv
+
+# Cache do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Configurações de IDEs
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
