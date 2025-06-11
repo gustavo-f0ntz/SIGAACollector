@@ -1,9 +1,11 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import pandas as pd
-import time
 import os
 from collections import defaultdict
+import tkinter as tk
+from tkinter import simpledialog
+
 
 # ---------------------
 # Função auxiliar: Detecta o turno com base no horário de início
@@ -20,11 +22,78 @@ def detectar_turno(hora_inicio):
         return "Unknown"
 
 # ---------------------
-# Inicialização do navegador
+# Seleção de navegador e inicialização
 # ---------------------
-options = webdriver.ChromeOptions()
-options.add_experimental_option("detach", True)  # Deixa o navegador aberto depois
-driver = webdriver.Chrome(options=options)
+
+BROWSERS = {
+    "1": ("Chrome", "chrome"),
+    "2": ("Firefox", "firefox"),
+    "3": ("Opera", "opera"),
+    "4": ("Opera GX", "opera_gx"),
+    "5": ("Brave", "brave"),
+}
+
+
+def init_driver(browser_key):
+    if browser_key in ("chrome", "brave"):
+        options = webdriver.ChromeOptions()
+        if browser_key == "brave":
+            brave_path = os.environ.get("BRAVE_PATH")
+            if brave_path:
+                options.binary_location = brave_path
+        options.add_experimental_option("detach", True)
+        return webdriver.Chrome(options=options)
+    if browser_key == "firefox":
+        options = webdriver.FirefoxOptions()
+        return webdriver.Firefox(options=options)
+    if browser_key in ("opera", "opera_gx"):
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option("detach", True)
+        if browser_key == "opera_gx":
+            opera_gx_path = os.environ.get("OPERAGX_PATH")
+            if opera_gx_path:
+                options.binary_location = opera_gx_path
+        return webdriver.Opera(options=options)
+    raise ValueError("Navegador não suportado")
+
+# ---------------------
+# Seleção da instituição e abertura do SIGAA correspondente
+# ---------------------
+
+INSTITUTIONS = {
+    "1": ("UFERSA", "https://sigaa.ufersa.edu.br/sigaa/verTelaLogin.do"),
+    "2": ("UERN", "https://sigaa.uern.br/sigaa/verTelaLogin.do"),
+}
+
+root = tk.Tk()
+root.withdraw()
+
+inst_choice = None
+while inst_choice not in INSTITUTIONS:
+    inst_choice = simpledialog.askstring(
+        "Instituição",
+        "Escolha a instituição:\n1 - UFERSA\n2 - UERN",
+    )
+    if inst_choice is None:
+        print("Seleção cancelada.")
+        exit()
+
+browser_choice = None
+while browser_choice not in BROWSERS:
+    browser_choice = simpledialog.askstring(
+        "Navegador",
+        "Escolha o navegador:\n1 - Chrome\n2 - Firefox\n3 - Opera\n4 - Opera GX\n5 - Brave",
+    )
+    if browser_choice is None:
+        print("Seleção cancelada.")
+        exit()
+
+root.destroy()
+
+inst_name, inst_url = INSTITUTIONS[inst_choice]
+driver = init_driver(BROWSERS[browser_choice][1])
+print(f"🌐 Abrindo {inst_name}...")
+driver.get(inst_url)
 
 # Garantir pasta de saída
 if not os.path.exists("output"):
