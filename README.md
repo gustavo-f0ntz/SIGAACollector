@@ -19,7 +19,7 @@
 
 ## 🔧 Requisitos
 
-1. Google Chrome instalado
+1. Um navegador baseado em Chromium ou Firefox instalado (Chrome, Brave, Opera, Opera GX...)
 2. ChromeDriver compatível com sua versão do navegador (instalado automaticamente com selenium >= 4.6)
 3. Sistema operacional com suporte ao ChromeDriver (Windows, Linux ou macOS)
 
@@ -66,25 +66,28 @@ pip install -r requirements.txt
 
 Passos:
 
-1. Acesse o SIGAA normalmente com seu login
-
-2. Navegue até a tela de matrícula com os horários visíveis
-
-3. No terminal, execute:
+1. No terminal, execute:
 ```
 python sigaa_collector.py
 ```
 
-4. Aguarde o prompt:
+Caso use Brave, Opera ou Opera GX em um local diferente do padrão, defina as
+variáveis de ambiente `BRAVE_PATH`, `OPERA_PATH` ou `OPERAGX_PATH` apontando
+para os respectivos executáveis antes de executar o script.
+
+2. Uma pequena janela aparecerá para selecionar o **navegador** (Chrome, Firefox, Opera, Opera GX ou Brave) e a **instituição** (UFERSA ou UERN). Após confirmar, o navegador escolhido será aberto automaticamente na página de login.
+
+   
+3. Faça login e navegue até a tela de matrícula com os horários visíveis. Em seguida, aguarde o prompt:
 
 ```
 🔵 Abra o SIGAA, faça login e acesse a tela de matrícula com disciplinas + horários.
 🔧 Pressione ENTER aqui quando estiver na tela certa...
 ```
 
-5. Volte para o terminal e pressione ```ENTER```
+4. Volte para o terminal e pressione ```ENTER```
 
-6. O script extrairá as disciplinas, locais, dias e horários e gerará:
+5. O script extrairá as disciplinas, locais, dias e horários e gerará:
 
 ```
 output/subjects_schedule.csv
